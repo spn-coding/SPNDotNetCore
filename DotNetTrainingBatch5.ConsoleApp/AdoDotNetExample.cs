@@ -134,6 +134,38 @@ namespace DotNetTrainingBatch5.ConsoleApp
 
         }
 
+        public void Edit()
+        {
+            Console.Write("Blog Id: ");
+            var id = Console.ReadLine();
+
+            SqlConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            string query = $@"SELECT BlogId, BlogTitle, BlogAuthor, BlogContent, DeleteFlag
+                            FROM DotNetTrainingBatch5.dbo.Tbl_Blog WHERE BlogId = @id";
+
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@id", id);
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            connection.Close();
+
+            if (dt.Rows.Count == 0)
+            {
+                Console.WriteLine("No Data Found!");
+                return;
+            }
+
+            DataRow dr = dt.Rows[0];
+            Console.WriteLine(dr["BlogId"]);
+            Console.WriteLine(dr["BlogTitle"]);
+            Console.WriteLine(dr["BlogAuthor"]);
+            Console.WriteLine(dr["BlogContent"]);
+        }
+
 
 
     }

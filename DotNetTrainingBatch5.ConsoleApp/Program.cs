@@ -10,6 +10,6 @@ Console.ReadLine();
 AdoDotNetExample adoDotNetExample = new AdoDotNetExample();
 // adoDotNetExample.Read();
 // adoDotNetExample.Create();
-
+adoDotNetExample.Edit();
 
 
