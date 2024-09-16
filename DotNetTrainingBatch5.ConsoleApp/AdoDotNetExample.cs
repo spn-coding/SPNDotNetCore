@@ -206,6 +206,33 @@ namespace DotNetTrainingBatch5.ConsoleApp
         }
 
 
+        public void Delete()
+        {
+            Console.WriteLine("Blog Id: ");
+            var id = Console.ReadLine();
+
+            SqlConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            // delete the whole row
+            // string query = $@"DELETE FROM DotNetTrainingBatch5.dbo.Tbl_Blog
+            //                 WHERE BlogId = @BlogId";
+
+            string query = $@"UPDATE DotNetTrainingBatch5.dbo.Tbl_Blog
+                                SET  
+                                DeleteFlag = 1
+                                WHERE BlogId = @BlogId";
+
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@Blogid", id);
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            Console.WriteLine(result == 1 ? "Delete Successful." : "Delete Failed");
+        }
+
 
 
     }
