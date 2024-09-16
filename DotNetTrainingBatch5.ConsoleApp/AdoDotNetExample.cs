@@ -166,6 +166,46 @@ namespace DotNetTrainingBatch5.ConsoleApp
             Console.WriteLine(dr["BlogContent"]);
         }
 
+        public void Update()
+        {
+            Console.WriteLine("Blog Id: ");
+            var id = Console.ReadLine();
+
+            Console.WriteLine("Blog Title: ");
+            var title = Console.ReadLine();
+
+            Console.WriteLine("Blog Author: ");
+            var author = Console.ReadLine();
+
+            Console.WriteLine("Blog Content: ");
+            var content = Console.ReadLine();
+
+            SqlConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            string query = $@"UPDATE DotNetTrainingBatch5.dbo.Tbl_Blog
+                                SET 
+                                BlogTitle = @BlogTitle, 
+                                BlogAuthor = @BlogAuthor, 
+                                BlogContent = @BlogContent, 
+                                DeleteFlag=0
+                                WHERE BlogId = @BlogId";
+
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            cmd.Parameters.AddWithValue("@BlogTitle", title);
+            cmd.Parameters.AddWithValue("@BlogAuthor", author);
+            cmd.Parameters.AddWithValue("@BlogContent", content);
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+            Console.WriteLine(result == 1 ? "Update Successful." : "Update Failed.");
+
+        }
+
+
 
 
     }
