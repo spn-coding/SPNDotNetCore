@@ -8,6 +8,8 @@ Console.WriteLine("Hello, World!");
 Console.ReadLine();
 
 AdoDotNetExample adoDotNetExample = new AdoDotNetExample();
-adoDotNetExample.Read();
+// adoDotNetExample.Read();
+// adoDotNetExample.Create();
+
 
 

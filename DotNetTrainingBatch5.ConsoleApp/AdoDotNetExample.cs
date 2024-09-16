@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace DotNetTrainingBatch5.ConsoleApp
 {
@@ -39,9 +40,101 @@ namespace DotNetTrainingBatch5.ConsoleApp
                 Console.WriteLine(reader["BlogContent"]);
             }
 
+            // foreach (DataRow dr in dt.Rows)
+            // {
+            //     Console.WriteLine(dr["BlogId"]);
+            //     Console.WriteLine(dr["BlogTitle"]);
+            //     Console.WriteLine(dr["BlogAuthor"]);
+            //     Console.WriteLine(dr["BlogContent"]);
+            //     Console.WriteLine(dr["DeleteFlag"]);
+            // }
+
             Console.WriteLine("Connection closing...");
             connection.Close();
             Console.WriteLine("Connection closing...");
+
+
+            // DataSet
+            // DataTable
+            // DataRow
+            // DataColumn
+
+            // foreach (DataRow dr in dt.Rows)
+            // {
+            //     Console.WriteLine(dr["BlogId"]);
+            //     Console.WriteLine(dr["BlogTitle"]);
+            //     Console.WriteLine(dr["BlogAuthor"]);
+            //     Console.WriteLine(dr["BlogContent"]);
+            //     Console.WriteLine(dr["DeleteFlag"]);
+            // }
+
         }
+
+        public void Create()
+        {
+            Console.WriteLine("Blog Title: ");
+            var title = Console.ReadLine();
+
+            Console.WriteLine("Blog Author: ");
+            var author = Console.ReadLine();
+
+            Console.WriteLine("Blog Content: ");
+            var content = Console.ReadLine();
+
+            SqlConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+
+            // string queryInsert = $@"INSERT INTO DotNetTrainingBatch5.dbo.Tbl_Blog
+            //                         (BlogTitle, 
+            //                         BlogAuthor, 
+            //                         BlogContent, 
+            //                         DeleteFlag)
+            //                     VALUES(
+            //                         '{title}', 
+            //                         '{author}', 
+            //                         '{content}', 
+            //                         0)";
+
+
+            string queryInsert = $@"INSERT INTO DotNetTrainingBatch5.dbo.Tbl_Blog
+                                    (BlogTitle, 
+                                    BlogAuthor, 
+                                    BlogContent, 
+                                    DeleteFlag)
+                                VALUES(
+                                    @BlogTitle,
+                                    @BlogAuthor,
+                                    @BlogContent,
+                                    0)";
+
+            SqlCommand cmd = new SqlCommand(queryInsert, connection);
+            cmd.Parameters.AddWithValue("@BlogTitle", title);
+            cmd.Parameters.AddWithValue("@BlogAuthor", author);
+            cmd.Parameters.AddWithValue("@BlogContent", content);
+
+            // SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            // DataTable dt = new DataTable();
+            // adapter.Fill(dt);
+
+            int result = cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+
+            // if (result == 1)
+            // {
+            //     Console.WriteLine("Saving Successful.");
+            // }
+            // else
+            // {
+            //     Console.WriteLine("Saving Failed.");
+            // }
+
+            Console.WriteLine(result == 1 ? "Saving Successful." : "Saving Failed.");
+
+        }
+
+
+
     }
 }
